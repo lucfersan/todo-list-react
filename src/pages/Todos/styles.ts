@@ -71,8 +71,8 @@ export const List = styled.ul`
       border: 0;
       border-radius: 5px;
       padding: 1rem;
-      height: 1rem;
-      font-size: 1rem;
+      height: 2.5rem;
+      font-size: 1.3rem;
       background: var(--red);
       color: var(--white);
       display: flex;
@@ -87,7 +87,7 @@ export const List = styled.ul`
     }
 
     & + div {
-      margin-top: 10px;
+      margin-top: 1rem;
     }
   }
 `;
