@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Container, Form, List } from './styles';
 
+interface TodoProps {
+  id: number;
+  name: string;
+}
+
 const Todos: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [newTodo, setNewTodo] = useState('');
-  const [listTodos, setListTodos] = useState<string[]>(() => {
+  const [listTodos, setListTodos] = useState<TodoProps[]>(() => {
     const storagedTodos = localStorage.getItem('@TodosReact:listTodos');
 
     if (storagedTodos) {
@@ -28,7 +34,16 @@ const Todos: React.FC = () => {
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      setListTodos([...listTodos, newTodo]);
+      if (!newTodo) return;
+      setListTodos(currentTodos => [
+        ...currentTodos,
+        { id: Date.now(), name: newTodo },
+      ]);
+
+      if (inputRef.current) {
+        inputRef.current.value = '';
+        inputRef.current.focus();
+      }
     },
     [newTodo, listTodos],
   );
@@ -45,15 +60,15 @@ const Todos: React.FC = () => {
       <h1>todos</h1>
 
       <Form onSubmit={handleSubmit}>
-        <input placeholder="todo" onChange={handleInputChange} />
+        <input ref={inputRef} placeholder="todo" onChange={handleInputChange} />
 
         <button type="submit">Add to list</button>
       </Form>
 
       <List>
         {listTodos.map(todo => (
-          <div key={todo}>
-            <li>{todo}</li>
+          <div key={todo.id}>
+            <li>{todo.name}</li>
             <button onClick={() => handleRemove(todo)}>Remove</button>
           </div>
         ))}
