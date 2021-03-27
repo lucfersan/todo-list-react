@@ -68,7 +68,9 @@ const Todos: React.FC = () => {
       <List>
         {listTodos.map(todo => (
           <div key={todo.id}>
-            <li>{todo.name}</li>
+            <li>
+              <span>{todo.name}</span>
+            </li>
             <button onClick={() => handleRemove(todo)}>Remove</button>
           </div>
         ))}

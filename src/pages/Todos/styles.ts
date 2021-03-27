@@ -13,6 +13,11 @@ export const Container = styled.div`
     font-size: 5rem;
     margin-top: 4rem;
   }
+
+  @media (max-width: 500px) {
+    width: 100vw;
+    padding: 2rem;
+  }
 `;
 
 export const Form = styled.form`
@@ -51,20 +56,54 @@ export const Form = styled.form`
       background: ${shade(0.1, '#4cd62b')};
     }
   }
+
+  @media (max-width: 500px) {
+    width: 100%;
+    flex-direction: column;
+    margin: 2rem 0;
+    align-items: center;
+
+    input,
+    button {
+      border-radius: 5px;
+    }
+
+    input {
+      width: 100%;
+    }
+
+    button {
+      margin-left: 0;
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+    }
+  }
 `;
 
 export const List = styled.ul`
   list-style-type: none;
   width: 30rem;
+  margin-bottom: 4rem;
 
   div {
     display: flex;
+    opacity: 0.7;
+    transition: opacity 0.2s ease, opacity 0.2s ease;
+
+    &:hover {
+      opacity: 1;
+      color: #000;
+    }
 
     li {
-      font-size: 1.5rem;
       flex: 1;
+      display: flex;
       align-items: center;
       overflow-x: auto;
+
+      span {
+        font-size: 1.5rem;
+      }
     }
 
     button {
@@ -88,6 +127,15 @@ export const List = styled.ul`
 
     & + div {
       margin-top: 1rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
+    margin-top: 2rem;
+
+    div {
+      opacity: 1;
     }
   }
 `;
