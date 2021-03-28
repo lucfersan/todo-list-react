@@ -103,6 +103,7 @@ export const List = styled.ul`
 
       span {
         font-size: 1.5rem;
+        cursor: pointer;
       }
     }
 

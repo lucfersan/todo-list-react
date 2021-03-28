@@ -1,6 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { Container, Form, List } from './styles';
+import { ModalContext } from '../../contexts/Modal';
 
 interface TodoProps {
   id: number;
@@ -8,6 +15,8 @@ interface TodoProps {
 }
 
 const Todos: React.FC = () => {
+  const { openModal } = useContext(ModalContext);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [newTodo, setNewTodo] = useState('');
   const [listTodos, setListTodos] = useState<TodoProps[]>(() => {
@@ -28,7 +37,7 @@ const Todos: React.FC = () => {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setNewTodo(e.target.value);
     },
-    [],
+    [newTodo],
   );
 
   const handleSubmit = useCallback(
@@ -56,26 +65,34 @@ const Todos: React.FC = () => {
   );
 
   return (
-    <Container>
-      <h1>todos</h1>
+    <>
+      <Container>
+        <h1>todos</h1>
 
-      <Form onSubmit={handleSubmit}>
-        <input ref={inputRef} placeholder="todo" onChange={handleInputChange} />
+        <Form onSubmit={handleSubmit}>
+          <input
+            ref={inputRef}
+            placeholder="todo"
+            onChange={handleInputChange}
+          />
 
-        <button type="submit">Add to list</button>
-      </Form>
+          <button type="submit">Add to list</button>
+        </Form>
 
-      <List>
-        {listTodos.map(todo => (
-          <div key={todo.id}>
-            <li>
-              <span>{todo.name}</span>
-            </li>
-            <button onClick={() => handleRemove(todo)}>Remove</button>
-          </div>
-        ))}
-      </List>
-    </Container>
+        <List>
+          {listTodos.map(todo => (
+            <div key={todo.id}>
+              <li>
+                <span onClick={() => openModal(todo.id, todo.name)}>
+                  {todo.name}
+                </span>
+              </li>
+              <button onClick={() => handleRemove(todo)}>Remove</button>
+            </div>
+          ))}
+        </List>
+      </Container>
+    </>
   );
 };
 
