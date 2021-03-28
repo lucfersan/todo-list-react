@@ -20,11 +20,14 @@
 
 This is a simple todo app with react, just for the sake of practicing a little bit react hooks.
 
+It uses the react context api to control the modal.
+
 ### Built With
 
 - [React](https://reactjs.org/)
 - [Styled Components](https://styled-components.com/)
 - [Typescript](https://www.typescriptlang.org/)
+- [Context API](https://reactjs.org/docs/context.html)
 
 ### Installation
 
