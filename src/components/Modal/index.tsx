@@ -6,6 +6,7 @@ import { Container, ModalContent, Form } from './styles';
 interface TodoProps {
   id: number;
   name: string;
+  done: boolean;
 }
 
 const Modal: React.FC = () => {
@@ -42,6 +43,7 @@ const Modal: React.FC = () => {
       const todo: TodoProps = {
         id,
         name: newTodo,
+        done: false,
       };
 
       const filteredList = listTodos.filter(todo => todo.id !== id);

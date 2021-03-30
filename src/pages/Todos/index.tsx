@@ -6,12 +6,13 @@ import React, {
   useState,
 } from 'react';
 
-import { Container, Form, List } from './styles';
+import { Container, Form, List, SpecialButton, TodoLi } from './styles';
 import { ModalContext } from '../../contexts/Modal';
 
 interface TodoProps {
   id: number;
   name: string;
+  done: boolean;
 }
 
 const Todos: React.FC = () => {
@@ -46,7 +47,7 @@ const Todos: React.FC = () => {
       if (!newTodo) return;
       setListTodos(currentTodos => [
         ...currentTodos,
-        { id: Date.now(), name: newTodo },
+        { id: Date.now(), name: newTodo, done: false },
       ]);
 
       if (inputRef.current) {
@@ -60,6 +61,30 @@ const Todos: React.FC = () => {
   const handleRemove = useCallback(
     todo => {
       setListTodos(listTodos.filter(t => t !== todo));
+    },
+    [listTodos],
+  );
+
+  const handleTodoDone = useCallback(
+    (id: number) => {
+      const getTodo = listTodos.filter(todo => todo.id === id);
+
+      const done = getTodo[0].done ? false : true;
+
+      const todo: TodoProps = {
+        ...getTodo[0],
+        done,
+      };
+
+      const filteredList = listTodos.filter(todo => todo.id !== id);
+      const updatedList = [...filteredList, todo];
+
+      localStorage.setItem(
+        '@TodosReact:listTodos',
+        JSON.stringify(updatedList),
+      );
+
+      location.reload();
     },
     [listTodos],
   );
@@ -82,12 +107,23 @@ const Todos: React.FC = () => {
         <List>
           {listTodos.map(todo => (
             <div key={todo.id}>
-              <li>
+              <TodoLi done={todo.done}>
                 <span onClick={() => openModal(todo.id, todo.name)}>
                   {todo.name}
                 </span>
-              </li>
-              <button onClick={() => handleRemove(todo)}>Remove</button>
+              </TodoLi>
+
+              <div>
+                <SpecialButton
+                  done={todo.done}
+                  onClick={() => handleTodoDone(todo.id)}
+                >
+                  ✔
+                </SpecialButton>
+                <SpecialButton onClick={() => handleRemove(todo)}>
+                  ✗
+                </SpecialButton>
+              </div>
             </div>
           ))}
         </List>

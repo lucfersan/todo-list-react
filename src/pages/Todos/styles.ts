@@ -1,5 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { shade } from 'polished';
+
+interface DoneProps {
+  done?: boolean;
+}
 
 export const Container = styled.div`
   min-height: 20rem;
@@ -95,35 +99,10 @@ export const List = styled.ul`
       color: #000;
     }
 
-    li {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      overflow-x: auto;
-
-      span {
-        font-size: 1.5rem;
-        cursor: pointer;
-      }
-    }
-
-    button {
-      border: 0;
-      border-radius: 5px;
-      padding: 1rem;
-      height: 2.5rem;
-      font-size: 1.3rem;
-      background: var(--red);
-      color: var(--white);
+    > div {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color 0.2s ease;
-      margin-left: 1rem;
-
-      &:hover {
-        background: ${shade(0.1, '#e83f5b')};
-      }
     }
 
     & + div {
@@ -137,6 +116,54 @@ export const List = styled.ul`
 
     div {
       opacity: 1;
+
+      > div {
+        flex-direction: column;
+
+        button:first-child {
+          margin-bottom: 0.5rem;
+        }
+      }
     }
+  }
+`;
+
+export const TodoLi = styled.li<DoneProps>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+
+  span {
+    font-size: 1.5rem;
+    cursor: pointer;
+    ${props =>
+      props.done
+        ? css`
+            text-decoration: line-through;
+          `
+        : ''}
+  }
+`;
+
+export const SpecialButton = styled.button<DoneProps>`
+  border: 0;
+  border-radius: 5px;
+  padding: 1rem;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  background: ${props =>
+    props.done !== undefined || null ? 'var(--done)' : 'var(--red)'};
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  margin-left: 1rem;
+
+  &:hover {
+    opacity: 0.8;
   }
 `;
