@@ -63,7 +63,11 @@ const Modal: React.FC = () => {
     <Container>
       <ModalContent>
         <Form onSubmit={handleUpdateTodo}>
-          <input placeholder={placeholder} onChange={handleInputChange} />
+          <input
+            defaultValue={placeholder}
+            placeholder={placeholder}
+            onChange={handleInputChange}
+          />
 
           <div>
             <button type="button" onClick={closeModal}>
