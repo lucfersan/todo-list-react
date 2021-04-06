@@ -22,7 +22,7 @@ This is a simple todo app with react, just for the sake of practicing a little b
 
 It uses the react context api to control the modal.
 
-PS: This project has two branches, the master, which is hosted on the web, and you can access it in the project link at the end of this README, and the api one. In order to use the second one you need to clone this (REPO)[https://github.com/lucfersan/api-todos-list-react], which is the api I developed for this project, and follow the steps to use it.
+PS: This project has two branches, the master, which is hosted on the web, and you can access it in the project link at the end of this README, and the api one. In order to use the second one you need to clone this [REPO](https://github.com/lucfersan/api-todos-list-react), which is the api I developed for this project, and follow the steps to use it.
 
 ### Built With
 
