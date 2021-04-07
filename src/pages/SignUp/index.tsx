@@ -1,12 +1,14 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 
 import { Container, SignUpContent } from './styles';
 
 import api from '../../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 
 import Input from '../../components/Input';
+
+import { AuthContext } from '../../contexts/Auth';
 
 interface DataProps {
   name: string;
@@ -15,24 +17,24 @@ interface DataProps {
 }
 
 const SignUp: React.FC = () => {
+  const { signUp } = useContext(AuthContext);
   const formRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = useCallback((data: DataProps) => {
-    const { name, email, password } = data;
+  const history = useHistory();
 
-    api
-      .post('users', {
-        name,
-        email,
-        password,
-      })
-      .catch(error => {
-        if (error.response) {
-          setErrorMessage(error.response.data.error);
-        }
-      });
-  }, []);
+  const handleSubmit = useCallback(
+    async (data: DataProps) => {
+      const response = await signUp(data);
+
+      if (typeof response === 'string') {
+        setErrorMessage(response);
+      } else {
+        history.push('/signin');
+      }
+    },
+    [history],
+  );
 
   return (
     <Container>

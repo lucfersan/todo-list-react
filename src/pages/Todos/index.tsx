@@ -8,8 +8,9 @@ import React, {
 
 import api from '../../services/api';
 
-import { Container, Form, List, SpecialButton, TodoLi } from './styles';
+import { Container, Form, List, SpecialButton, TodoLi, LogOut } from './styles';
 import { ModalContext } from '../../contexts/Modal';
+import { AuthContext } from '../../contexts/Auth';
 
 interface TodoProps {
   id: number;
@@ -21,13 +22,14 @@ interface TodoProps {
 
 const Todos: React.FC = () => {
   const { openModal } = useContext(ModalContext);
+  const { user, signOut } = useContext(AuthContext);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [newTodo, setNewTodo] = useState('');
   const [listTodos, setListTodos] = useState<TodoProps[]>([]);
 
   useEffect(() => {
-    api.get('todos').then(response => {
+    api.get(`todos/${user.id}`).then(response => {
       setListTodos(response.data);
     });
   }, []);
@@ -45,6 +47,7 @@ const Todos: React.FC = () => {
       if (!newTodo) return;
       api
         .post('todos', {
+          user_id: user.id,
           name: newTodo,
         })
         .then(response => {
@@ -75,7 +78,11 @@ const Todos: React.FC = () => {
   return (
     <>
       <Container>
-        <h1>todos</h1>
+        <h1>To-Dos</h1>
+
+        <LogOut type="button" onClick={signOut}>
+          Log out
+        </LogOut>
 
         <Form onSubmit={handleSubmit}>
           <input

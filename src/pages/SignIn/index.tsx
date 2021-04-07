@@ -1,36 +1,39 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState, useContext } from 'react';
 
 import { Container, SignInContent } from './styles';
 
-import api from '../../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 
 import Input from '../../components/Input';
 
-interface DataProps {
+import { AuthContext } from '../../contexts/Auth';
+
+interface SignInDataProps {
   email: string;
   password: string;
 }
 
 const SignIn: React.FC = () => {
+  const { signIn } = useContext(AuthContext);
+
   const formRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = useCallback((data: DataProps) => {
-    const { email, password } = data;
+  const history = useHistory();
 
-    api
-      .post('session', {
-        email,
-        password,
-      })
-      .catch(error => {
-        if (error.response) {
-          setErrorMessage(error.response.data.error);
-        }
-      });
-  }, []);
+  const handleSubmit = useCallback(
+    async (data: SignInDataProps) => {
+      const response = await signIn(data);
+
+      if (typeof response === 'string') {
+        setErrorMessage(response);
+      } else {
+        history.push('/');
+      }
+    },
+    [signIn, history],
+  );
 
   return (
     <Container>
