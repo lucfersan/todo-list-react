@@ -6,33 +6,33 @@ import React, {
   useState,
 } from 'react';
 
-import { Container, Form, List, SpecialButton, TodoLi } from './styles';
+import api from '../../services/api';
+
+import { Container, Form, List, SpecialButton, TodoLi, LogOut } from './styles';
 import { ModalContext } from '../../contexts/Modal';
+import { AuthContext } from '../../contexts/Auth';
 
 interface TodoProps {
   id: number;
   name: string;
   done: boolean;
+  created_at: number;
+  updated_at: number;
 }
 
 const Todos: React.FC = () => {
   const { openModal } = useContext(ModalContext);
+  const { user, signOut } = useContext(AuthContext);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [newTodo, setNewTodo] = useState('');
-  const [listTodos, setListTodos] = useState<TodoProps[]>(() => {
-    const storagedTodos = localStorage.getItem('@TodosReact:listTodos');
-
-    if (storagedTodos) {
-      return JSON.parse(storagedTodos);
-    }
-
-    return [];
-  });
+  const [listTodos, setListTodos] = useState<TodoProps[]>([]);
 
   useEffect(() => {
-    localStorage.setItem('@TodosReact:listTodos', JSON.stringify(listTodos));
-  }, [listTodos]);
+    api.get(`todos/${user.id}`).then(response => {
+      setListTodos(response.data);
+    });
+  }, []);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,10 +45,14 @@ const Todos: React.FC = () => {
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!newTodo) return;
-      setListTodos(currentTodos => [
-        ...currentTodos,
-        { id: Date.now(), name: newTodo, done: false },
-      ]);
+      api
+        .post('todos', {
+          user_id: user.id,
+          name: newTodo,
+        })
+        .then(response => {
+          setListTodos([...listTodos, response.data]);
+        });
 
       if (inputRef.current) {
         inputRef.current.value = '';
@@ -58,32 +62,14 @@ const Todos: React.FC = () => {
     [newTodo, listTodos],
   );
 
-  const handleRemove = useCallback(
-    todo => {
-      setListTodos(listTodos.filter(t => t !== todo));
-    },
-    [listTodos],
-  );
+  const handleRemove = useCallback((todo: TodoProps) => {
+    api.delete(`todos/${todo.id}`);
+    location.reload();
+  }, []);
 
   const handleTodoDone = useCallback(
     (id: number) => {
-      const getTodo = listTodos.filter(todo => todo.id === id);
-
-      const done = getTodo[0].done ? false : true;
-
-      const todo: TodoProps = {
-        ...getTodo[0],
-        done,
-      };
-
-      const filteredList = listTodos.filter(todo => todo.id !== id);
-      const updatedList = [...filteredList, todo];
-
-      localStorage.setItem(
-        '@TodosReact:listTodos',
-        JSON.stringify(updatedList),
-      );
-
+      api.patch(`todos/done/${id}`);
       location.reload();
     },
     [listTodos],
@@ -92,7 +78,11 @@ const Todos: React.FC = () => {
   return (
     <>
       <Container>
-        <h1>todos</h1>
+        <h1>To-Dos</h1>
+
+        <LogOut type="button" onClick={signOut}>
+          Log out
+        </LogOut>
 
         <Form onSubmit={handleSubmit}>
           <input
