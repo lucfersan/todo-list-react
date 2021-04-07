@@ -1,12 +1,12 @@
 import React from 'react';
-import Todos from './pages/Todos';
+import Routes from './routes';
 import GlobalStyle from './styles/GlobalStyle';
 import { ModalProvider } from './contexts/Modal';
 
 const App: React.FC = () => {
   return (
     <ModalProvider>
-      <Todos />
+      <Routes />
 
       <GlobalStyle />
     </ModalProvider>
