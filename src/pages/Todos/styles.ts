@@ -38,7 +38,7 @@ export const Form = styled.form`
     font-size: 1.5rem;
 
     &:focus {
-      border-bottom: 3px solid var(--blue-twitter);
+      border-bottom: 2px solid var(--green);
     }
   }
 
