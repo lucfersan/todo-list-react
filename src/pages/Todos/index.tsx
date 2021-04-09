@@ -42,17 +42,16 @@ const Todos: React.FC = () => {
   );
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!newTodo) return;
-      api
-        .post('todos', {
-          user_id: user.id,
-          name: newTodo,
-        })
-        .then(response => {
-          setListTodos([...listTodos, response.data]);
-        });
+
+      const response = await api.post('todos', {
+        user_id: user.id,
+        name: newTodo,
+      });
+
+      setListTodos([...listTodos, response.data]);
 
       if (inputRef.current) {
         inputRef.current.value = '';
@@ -62,14 +61,14 @@ const Todos: React.FC = () => {
     [newTodo, listTodos],
   );
 
-  const handleRemove = useCallback((todo: TodoProps) => {
-    api.delete(`todos/${todo.id}`);
+  const handleRemove = useCallback(async (todo: TodoProps) => {
+    await api.delete(`todos/${todo.id}`);
     location.reload();
   }, []);
 
   const handleTodoDone = useCallback(
-    (id: number) => {
-      api.patch(`todos/done/${id}`);
+    async (id: number) => {
+      await api.patch(`todos/done/${id}`);
       location.reload();
     },
     [listTodos],
