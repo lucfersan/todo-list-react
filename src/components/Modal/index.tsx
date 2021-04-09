@@ -18,12 +18,12 @@ const Modal: React.FC = () => {
   );
 
   const handleUpdateTodo = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
+    async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       if (!newTodo) return;
 
-      api.patch(`todos/${id}`, {
+      await api.patch(`todos/${id}`, {
         name: newTodo,
       });
 
