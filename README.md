@@ -20,9 +20,13 @@
 
 This is a todo app with react, which has some great functionalities such as authentication, connection to an external api, and more!
 
+**This is the [Api-Repo](https://github.com/lucfersan/api-todo-list-react) I developed for this project.**
+
 It uses react context api to handle some features such as the update modal and authentication credentials.
 
 It was a great experience for me to work with those technologies and learn a little bit of deployment and connection to an external service.
+
+PS: If you wanna test it on the project link, create an account with a fake email, since you can get all the emails from the api url.
 
 ### Built With
 
