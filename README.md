@@ -2,7 +2,7 @@
   <h3 align="center">Todo web app with ReactJS</h3>
 
   <p align="center">
-    A simple todo list made with ReactJS and Styled Components.
+    A todo list made with ReactJS and Styled Components.
     <br />
     <a href="https://github.com/lucfersan/todo-list-react"><strong>Explore the docs »</strong></a>
     <br />
@@ -18,9 +18,11 @@
 
 ![Login Pages React](.github/todos.gif)
 
-This is a simple todo app with react, just for the sake of practicing a little bit react hooks.
+This is a todo app with react, which has some great functionalities such as authentication, connection to an external api, and more!
 
-It uses the react context api to control the modal and authentication.
+It uses react context api to handle some features such as the update modal and authentication credentials.
+
+It was a great experience for me to work with those technologies and learn a little bit of deployment and connection to an external service.
 
 ### Built With
 
