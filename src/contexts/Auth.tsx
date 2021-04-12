@@ -7,13 +7,12 @@ interface AuthState {
 }
 
 interface SignInCredentials {
-  email: string;
+  username: string;
   password: string;
 }
 
 interface SignUpCredentials {
-  name: string;
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -40,25 +39,28 @@ const AuthProvider: React.FC = ({ children }) => {
     return {};
   });
 
-  const signIn = useCallback(async ({ email, password }: SignInCredentials) => {
-    try {
-      const response = await api.post('session', { email, password });
+  const signIn = useCallback(
+    async ({ username, password }: SignInCredentials) => {
+      try {
+        const response = await api.post('session', { username, password });
 
-      const { token, user } = response.data;
+        const { token, user } = response.data;
 
-      localStorage.setItem('@ListLucas:token', token);
-      localStorage.setItem('@ListLucas:user', JSON.stringify(user));
+        localStorage.setItem('@ListLucas:token', token);
+        localStorage.setItem('@ListLucas:user', JSON.stringify(user));
 
-      setData({ token, user });
-    } catch (err) {
-      return err.response.data.error;
-    }
-  }, []);
+        setData({ token, user });
+      } catch (err) {
+        return err.response.data.error;
+      }
+    },
+    [],
+  );
 
   const signUp = useCallback(
-    async ({ name, email, password }: SignUpCredentials) => {
+    async ({ username, password }: SignUpCredentials) => {
       try {
-        await api.post('users', { name, email, password });
+        await api.post('users', { username, password });
       } catch (err) {
         return err.response.data.error;
       }

@@ -10,9 +10,8 @@ import Input from '../../components/Input';
 
 import { AuthContext } from '../../contexts/Auth';
 
-interface DataProps {
-  name: string;
-  email: string;
+interface SignUpDataProps {
+  username: string;
   password: string;
 }
 
@@ -24,7 +23,7 @@ const SignUp: React.FC = () => {
   const history = useHistory();
 
   const handleSubmit = useCallback(
-    async (data: DataProps) => {
+    async (data: SignUpDataProps) => {
       const response = await signUp(data);
 
       if (typeof response === 'string') {
@@ -43,9 +42,7 @@ const SignUp: React.FC = () => {
 
         <Form ref={formRef} onSubmit={handleSubmit}>
           <h2>{errorMessage}</h2>
-          <Input name="name" placeholder="Name" required />
-
-          <Input name="email" placeholder="Email" type="email" required />
+          <Input name="username" placeholder="Username" required />
 
           <Input
             name="password"
