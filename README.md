@@ -26,8 +26,6 @@ It uses react context api to handle some features such as the update modal and a
 
 It was a great experience for me to work with those technologies and learn a little bit of deployment and connection to an external service.
 
-PS: If you wanna test it on the project link, create an account with a fake email, since you can get all the emails from the api url.
-
 ### Built With
 
 - [React](https://reactjs.org/)
