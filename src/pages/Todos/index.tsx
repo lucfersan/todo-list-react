@@ -61,9 +61,15 @@ const Todos: React.FC = () => {
     [newTodo, listTodos],
   );
 
-  const handleRemove = useCallback(async (todo: TodoProps) => {
-    await api.delete(`todos/${todo.id}`);
-    location.reload();
+  const handleRemove = useCallback(async (event, todo: TodoProps) => {
+    const confirmation = confirm('Are you sure you want to delete?');
+
+    if (!confirmation) {
+      event.preventDefault();
+    } else {
+      await api.delete(`todos/${todo.id}`);
+      location.reload();
+    }
   }, []);
 
   const handleTodoDone = useCallback(
@@ -109,7 +115,7 @@ const Todos: React.FC = () => {
                 >
                   ✔
                 </SpecialButton>
-                <SpecialButton onClick={() => handleRemove(todo)}>
+                <SpecialButton onClick={() => handleRemove(event, todo)}>
                   ✗
                 </SpecialButton>
               </div>
