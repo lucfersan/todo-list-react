@@ -62,5 +62,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Lucas Fernandes - fernandes.lucas11@outlook.com
-
-Project Link - live view: [https://listlucas.netlify.app/](https://listlucas.netlify.app/)
